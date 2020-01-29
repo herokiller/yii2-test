@@ -42,7 +42,10 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/' => 'apple/index'
+                '/' => 'apple/index',
+                'POST /apple/eat/<id:\d+>' => '/apple/eat',
+                'POST /apple/fall/<id:\d+>' => '/apple/fall',
+                'POST /apple/generate' => '/apple/generate'
             ],
         ],
 

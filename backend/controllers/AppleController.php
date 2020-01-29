@@ -10,9 +10,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
-/**
- * AppleController implements the CRUD actions for Apple model.
- */
 class AppleController extends Controller
 {
     /**
@@ -25,7 +22,7 @@ class AppleController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'test', 'eat', 'fall', 'generate'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -40,10 +37,6 @@ class AppleController extends Controller
         ];
     }
 
-    /**
-     * Lists all Apple models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
@@ -53,6 +46,31 @@ class AppleController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionGenerate() {
+        $number = rand(5, 10);
+        for ($i = 1; $i <= $number; $i++ ) {
+            $apple = new Apple();
+            $apple->save();
+        }
+        $this->redirect('/apple');
+    }
+
+    public function actionEat($id)
+    {
+        $apple = $this->findModel($id);
+        $request = Yii::$app->request;
+        $percent = $request->post('percent');
+        $apple->eat($percent);
+        $this->redirect('/apple');
+    }
+
+    public function actionFall($id)
+    {
+        $apple = $this->findModel($id);
+        $apple->fallToGround();
+        $this->redirect('/apple');
     }
 
     /**
